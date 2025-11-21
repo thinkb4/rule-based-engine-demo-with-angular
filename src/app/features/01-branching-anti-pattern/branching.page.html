@@ -1,0 +1,53 @@
+<section class="section">
+  <h2>Anti-pattern: branching hell</h2>
+  <p>Nested <code>if/else</code> with duplicated checks, dead code, and priority bugs.</p>
+
+  <div class="controls">
+    <label>
+      Type:
+      <select [value]="type()" (change)="onSelectType($event)">
+        @for (t of types; track $index) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      State:
+      <select [value]="state()" (change)="onSelectState($event)">
+        @for (s of states; track $index) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <article class="card">
+    <h3>{{ vm().header }}</h3>
+    <ul>
+      <li>Idle flag: {{ vm().flags.showIdle }}</li>
+      <li>Running flag: {{ vm().flags.showRunning }}</li>
+      <li>Ready flag: {{ vm().flags.showReady }}</li>
+      <li>Failed flag: {{ vm().flags.showFailed }}</li>
+    </ul>
+    <p><strong>Primary Action:</strong> {{ vm().action.kind }} — {{ vm().action.label }}</p>
+  </article>
+</section>
+
+<section class="notes">
+  <h4>Purpose</h4>
+  <p>Show why deeply nested branching is hard to read, reason about, and test.</p>
+
+  <h4>Problems shown</h4>
+  <ul>
+    <li>Duplicated checks and hidden priority rules.</li>
+    <li>Dead or unreachable branches that creep in over time.</li>
+    <li>Hard to unit-test exhaustively; minor edits can break unrelated paths.</li>
+  </ul>
+
+  <h4>How the logic is implemented here</h4>
+  <p>
+    All decisions are interleaved in nested <code>if/else</code> blocks. The business rules (header and primary action)
+    are mixed with control flow, making changes error-prone.
+  </p>
+</section>

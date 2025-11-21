@@ -1,0 +1,33 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compilerOptions": {
+    // Angular CLI will set target=ES2022 + useDefineForClassFields=false automatically.
+    // We can match them to avoid CLI warnings:
+    "target": "es2022",
+    "useDefineForClassFields": false,
+    "module": "es2022",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "outDir": "./out-tsc/spec",
+
+    // Let the test environment see "describe", "it", etc. from Jasmine
+    "types": ["jest", "node"],
+    "baseUrl": "./",
+     /* Aliases */
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true,
+    "isolatedModules": true
+  },
+
+  // Ensure all .spec.ts (and anything they import) are included
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+  ],
+
+  "exclude": [
+    "**/node_modules/**"
+  ]
+}

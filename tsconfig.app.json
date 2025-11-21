@@ -1,0 +1,30 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compilerOptions": {
+    // The Angular CLI forcibly sets target=ES2022 + useDefineForClassFields=false anyway
+    // but you can add them here if you want to suppress warnings:
+    "target": "es2022",
+    "useDefineForClassFields": false,
+    "module": "es2022",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+
+    "outDir": "./out-tsc/app",
+    "baseUrl": "./",
+     /* Aliases */
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "files": [
+    "src/main.ts",
+  ],
+  "include": [
+    // Include all our .ts files for the main app:
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    // EXCLUDE specs so the main build won't try to compile them
+    "**/*.spec.ts",
+  ]
+}

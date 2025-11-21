@@ -1,0 +1,59 @@
+<section class="section">
+  <h2>Improved Rule Engine</h2>
+  <p>Context-aware rules with explicit priority, DI registration, and tracing.</p>
+
+  <div class="controls">
+    <label>
+      Type:
+      <select [value]="type()" (change)="onSelectType($event)">
+        @for (t of types; track $index) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      State:
+      <select [value]="state()" (change)="onSelectState($event)">
+        @for (s of states; track $index) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <article class="card">
+    <h3>{{ header() }}</h3>
+    <p><strong>Primary Action:</strong> {{ action().kind }} — {{ action().label }}</p>
+  </article>
+
+  <details class="trace">
+    <summary>Trace</summary>
+    <ul>
+      @for (t of trace(); track $index) {
+        <li>{{ t }}</li>
+      }
+    </ul>
+  </details>
+</section>
+
+<section class="notes">
+  <h4>Purpose</h4>
+  <p>
+    Upgrade the decision table with explicit priorities, context-aware rules, DI-based rule registration, and tracing.
+  </p>
+
+  <h4>Problems addressed</h4>
+  <ul>
+    <li>Hidden coupling by array order → replaced with explicit <code>priority</code>.</li>
+    <li>Monolithic policy file → rules contributed via Angular DI (<code>multi: true</code>).</li>
+    <li>Poor debuggability → trace shows which rules matched and what value was selected.</li>
+  </ul>
+
+  <h4>How the solution is applied</h4>
+  <p>
+    A generic <code>decideWithCtx(ctx, rules, fallback, trace?)</code> sorts rules by priority and evaluates predicates
+    on a typed context. Rules can return literal values or compute them lazily from context. Features can register rules
+    using injection tokens, keeping policy modular.
+  </p>
+</section>

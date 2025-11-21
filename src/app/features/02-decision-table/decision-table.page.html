@@ -1,0 +1,54 @@
+<section class="section">
+  <h2>Rule-based: decision table (first-match-wins)</h2>
+  <p>Facts are derived once; rules (data) decide headers and actions by priority.</p>
+
+  <div class="controls">
+    <label>
+      Type:
+      <select [value]="type()" (change)="onSelectType($event)">
+        @for (t of types; track $index) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      State:
+      <select [value]="state()" (change)="onSelectState($event)">
+        @for (s of states; track $index) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <article class="card">
+    <h3>{{ vm().header }}</h3>
+    <ul>
+      <li>Idle flag: {{ vm().flags.showIdle }}</li>
+      <li>Running flag: {{ vm().flags.showRunning }}</li>
+      <li>Ready flag: {{ vm().flags.showReady }}</li>
+      <li>Failed flag: {{ vm().flags.showFailed }}</li>
+    </ul>
+    <p><strong>Primary Action:</strong> {{ vm().action.kind }} — {{ vm().action.label }}</p>
+  </article>
+</section>
+
+<section class="notes">
+  <h4>Purpose</h4>
+  <p>Demonstrate a minimal, data-driven Chain of Responsibility (decision table).</p>
+
+  <h4>Problems addressed</h4>
+  <ul>
+    <li>Removes nested branching; policy becomes declarative data.</li>
+    <li>Deterministic priority: first matching rule wins.</li>
+    <li>Facts are derived once; rules depend on facts, improving testability.</li>
+  </ul>
+
+  <h4>How the solution is applied</h4>
+  <p>
+    We compute facts (e.g., <code>isIdle</code>, <code>isReady</code>) and pass them to a helper
+    <code>pickByRules</code> with an ordered array of <code>&#123; when, value &#125;</code>. The first match returns
+    the result; otherwise we fall back.
+  </p>
+</section>

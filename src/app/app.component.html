@@ -1,0 +1,36 @@
+<header class="app-header" (keydown)="onKeydown($event)">
+  <!-- Hamburger (left of title) -->
+  <button
+    class="hamburger"
+    type="button"
+    aria-label="Open navigation"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="app-menu"
+    (click)="toggleMenu($event)"
+  >
+    <span></span><span></span><span></span>
+  </button>
+
+  <h1 class="app-title">Rule Based Engine Demo (Pure Angular)</h1>
+
+  <!-- Popover Menu -->
+  <nav
+    id="app-menu"
+    class="menu"
+    [class.open]="menuOpen()"
+    (click)="$event.stopPropagation()"
+  >
+    <a
+      *ngFor="let i of items"
+      [routerLink]="i.link"
+      routerLinkActive="active"
+      (click)="close()"
+    >
+      {{ i.label }}
+    </a>
+  </nav>
+</header>
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>

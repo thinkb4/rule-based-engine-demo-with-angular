@@ -1,0 +1,51 @@
+<section class="section">
+  <h2>FSM Alternative</h2>
+  <p>Explicit states and events; VM is a pure mapping of (state, type).</p>
+
+  <div class="controls">
+    <label>
+      Type:
+      <select [value]="type()" (change)="onType($event)">
+        @for (t of types; track $index) {
+          <option [value]="t">{{ t }}</option>
+        }
+      </select>
+    </label>
+    <span>State: <strong>{{ state() }}</strong></span>
+  </div>
+
+  <div class="buttons">
+    <button type="button" (click)="dispatch('start')"    [disabled]="!can('start')">start</button>
+    <button type="button" (click)="dispatch('complete')" [disabled]="!can('complete')">complete</button>
+    <button type="button" (click)="dispatch('fail')"     [disabled]="!can('fail')">fail</button>
+    <button type="button" (click)="dispatch('reset')"    [disabled]="!can('reset')">reset</button>
+  </div>
+
+  <p class="hint">Allowed events:
+    @for (e of allowed(); track $index) { <code>{{ e }}</code> }
+  </p>
+
+  <article class="card">
+    <h3>{{ vm().header }}</h3>
+    <p><strong>Primary Action:</strong> {{ vm().action.kind }} — {{ vm().action.label }}</p>
+  </article>
+</section>
+
+<section class="notes">
+  <h4>Purpose</h4>
+  <p>Show a finite-state machine when the lifecycle is strict and event-driven.</p>
+
+  <h4>Problems addressed</h4>
+  <ul>
+    <li>Mutually exclusive states become explicit; illegal events are blocked.</li>
+    <li>View-model is a pure function of <code>(state, type)</code>, easy to test.</li>
+    <li>Buttons reflect allowed transitions; disallowed actions are simply disabled.</li>
+  </ul>
+
+  <h4>How the solution is applied</h4>
+  <p>
+    We define a transition table and a <code>step(current, event)</code> function.
+    The VM is derived by <code>vmFrom(state, type)</code> using a 2D mapping.
+    Allowed events are computed from the transition table to enable/disable buttons.
+  </p>
+</section>

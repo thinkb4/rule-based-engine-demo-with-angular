@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+/* Header */
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  background: #f0f0f0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Hamburger button */
+.hamburger {
+  width: 36px;
+  height: 28px;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #333;
+  border-radius: 1px;
+}
+
+/* Dropdown menu */
+.menu {
+  position: absolute;
+  top: 48px;
+  left: 12px;
+  display: none;
+  min-width: 220px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  z-index: 10;
+}
+
+.menu.open {
+  display: block;
+}
+
+.menu a {
+  display: block;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: #333;
+  border-radius: 6px;
+}
+
+.menu a:hover,
+.menu a.active {
+  background: #f2f2f2;
+}
+
+/* Main content */
+.app-main {
+  padding: 16px;
+}
