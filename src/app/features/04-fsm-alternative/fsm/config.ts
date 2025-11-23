@@ -1,39 +1,37 @@
 import type { Transition } from './engine';
+import { ActionKind, JobState, JobType, PrimaryAction } from '@/app/shared/domain/job.model';
 
-export type State = 'idle' | 'running' | 'ready' | 'failed';
-export type FsmEvent = 'start' | 'complete' | 'fail' | 'reset';
+export enum FsmEvent {
+  Start = 'start',
+  Complete = 'complete',
+  Fail = 'fail',
+  Reset = 'reset',
+}
+
+export type State = JobState;
 
 export const transitions: readonly Transition<State, FsmEvent>[] = [
-  { from: 'idle',   event: 'start',    to: 'running' },
-  { from: 'running', event: 'complete', to: 'ready' },
-  { from: 'running', event: 'fail',     to: 'failed' },
-  { from: 'failed',  event: 'reset',    to: 'idle' },
-  { from: 'ready',   event: 'reset',    to: 'idle' },
+  { from: JobState.Idle,    event: FsmEvent.Start,    to: JobState.Running },
+  { from: JobState.Running, event: FsmEvent.Complete, to: JobState.Ready },
+  { from: JobState.Running, event: FsmEvent.Fail,     to: JobState.Failed },
+  { from: JobState.Failed,  event: FsmEvent.Reset,    to: JobState.Idle },
+  { from: JobState.Ready,   event: FsmEvent.Reset,    to: JobState.Idle },
 ];
 
-export type JobType = 'standard' | 'premium';
-
-export type PrimaryAction =
-  | { kind: 'start'; label: string }
-  | { kind: 'view'; label: string }
-  | { kind: 'retry'; label: string }
-  | { kind: 'none'; label: string };
-
 export function vmFrom(state: State, type: JobType): { header: string; action: PrimaryAction } {
-  const who = type === 'premium' ? 'Premium' : 'Standard';
-
+  const who = type === JobType.Premium ? 'Premium' : 'Standard';
   const headerMap: Record<State, string> = {
-    idle: `${who} job is idle`,
-    running: `${who} is processing`,
-    ready: `${who} result ready`,
-    failed: `${who} failed`,
+    [JobState.Idle]: `${who} job is idle`,
+    [JobState.Running]: `${who} is processing`,
+    [JobState.Ready]: `${who} result ready`,
+    [JobState.Failed]: `${who} failed`,
   };
 
   const actionMap: Record<State, PrimaryAction> = {
-    idle: { kind: 'start', label: type === 'premium' ? 'Start Premium' : 'Start Standard' },
-    running: { kind: 'none', label: 'Processing…' },
-    ready: { kind: 'view', label: 'Open Result' },
-    failed: { kind: 'retry', label: 'Retry' },
+    [JobState.Idle]: { kind: ActionKind.Start, label: type === JobType.Premium ? 'Start Premium' : 'Start Standard' },
+    [JobState.Running]: { kind: ActionKind.None, label: 'Processing…' },
+    [JobState.Ready]: { kind: ActionKind.View, label: 'Open Result' },
+    [JobState.Failed]: { kind: ActionKind.Retry, label: 'Retry' },
   };
 
   return { header: headerMap[state], action: actionMap[state] };

@@ -1,92 +1,44 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  Provider,
-  signal,
-} from '@angular/core';
-import { decideWithCtx } from './rules/decision-engine';
-import {
-  ACTION_RULES,
-  HEADER_RULES,
-  Ctx,
-  JobState,
-  JobType,
-  PrimaryAction,
-} from './rules/tokens';
-
-function deriveCtx(type: JobType, state: JobState): Ctx {
-  const facts = {
-    isStandard: type === 'standard',
-    isPremium: type === 'premium',
-    isIdle: state === 'idle',
-    isRunning: state === 'running',
-    isReady: state === 'ready',
-    isFailed: state === 'failed',
-  } as const;
-  return { type, state, facts };
-}
-
-// Base DI-provided rules (unchanged)
-const baseProviders: Provider[] = [
-  { provide: HEADER_RULES, multi: true, useValue: { name: 'idle-standard', priority: 40, when: (c: Ctx) => c.facts.isIdle && c.facts.isStandard, value: 'Standard job is idle' } },
-  { provide: HEADER_RULES, multi: true, useValue: { name: 'idle-premium',  priority: 40, when: (c: Ctx) => c.facts.isIdle && c.facts.isPremium,  value: 'Premium job is idle' } },
-  { provide: HEADER_RULES, multi: true, useValue: { name: 'running',       priority: 30, when: (c: Ctx) => c.facts.isRunning, value: (c: Ctx) => (c.facts.isPremium ? 'Premium is processing' : 'Standard is processing') } },
-  { provide: HEADER_RULES, multi: true, useValue: { name: 'ready',         priority: 20, when: (c: Ctx) => c.facts.isReady,   value: (c: Ctx) => (c.facts.isPremium ? 'Premium result ready' : 'Standard result ready') } },
-  { provide: HEADER_RULES, multi: true, useValue: { name: 'failed',        priority: 10, when: (c: Ctx) => c.facts.isFailed,  value: (c: Ctx) => (c.facts.isPremium ? 'Premium failed' : 'Standard failed') } },
-
-  { provide: ACTION_RULES, multi: true, useValue: { name: 'ready->view',   priority: 100, when: (c: Ctx) => c.facts.isReady,   value: { kind: 'view',  label: 'Open Result' } as const } },
-  { provide: ACTION_RULES, multi: true, useValue: { name: 'running->none', priority: 80,  when: (c: Ctx) => c.facts.isRunning, value: { kind: 'none',  label: 'Processing…' } as const } },
-  { provide: ACTION_RULES, multi: true, useValue: { name: 'idle->start',   priority: 60,  when: (c: Ctx) => c.facts.isIdle,    value: (c: Ctx) => ({ kind: 'start', label: c.facts.isPremium ? 'Start Premium' : 'Start Standard' }) as const } },
-  { provide: ACTION_RULES, multi: true, useValue: { name: 'failed->retry', priority: 40,  when: (c: Ctx) => c.facts.isFailed,  value: { kind: 'retry', label: 'Retry' } as const } },
-];
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { JOB_STATES, JOB_TYPES, JobState, JobType, PrimaryAction, ActionKind, NO_ACTION } from '@/app/shared/domain/job.model';
+import { buildJobCtx } from '@/app/shared/domain/job.ctx';
+import { decideWithCtx } from '@/app/shared/rules/decision-engine';
+import { ACTION_RULES, HEADER_RULES } from './rules/tokens';
+import { BASE_RULE_PROVIDERS } from './rules/base-rules.provider';
 
 @Component({
   standalone: true,
   selector: 'app-decision-table-advanced-page',
   imports: [],
-  providers: [...baseProviders],
+  providers: [...BASE_RULE_PROVIDERS],
   templateUrl: './decision-table-advanced.page.html',
   styleUrls: ['./decision-table-advanced.page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DecisionTableAdvancedPage {
-  readonly types: readonly JobType[] = ['standard', 'premium'] as const;
-  readonly states: readonly JobState[] = ['idle', 'running', 'ready', 'failed'] as const;
+  readonly types = JOB_TYPES;
+  readonly states = JOB_STATES;
 
-  readonly type = signal<JobType>('standard');
-  readonly state = signal<JobState>('idle');
+  readonly type = signal<JobType>(JobType.Standard);
+  readonly state = signal<JobState>(JobState.Idle);
 
   private readonly headerRules = inject(HEADER_RULES, { optional: true }) ?? [];
   private readonly actionRules = inject(ACTION_RULES, { optional: true }) ?? [];
 
-  // PURE computed for header and action using decision engine
   readonly header = computed(() => {
-    const ctx = deriveCtx(this.type(), this.state());
+    const ctx = buildJobCtx(this.type(), this.state());
     return decideWithCtx(ctx, this.headerRules, () => 'Unknown state');
   });
 
   readonly action = computed<PrimaryAction>(() => {
-    const ctx = deriveCtx(this.type(), this.state());
-    return decideWithCtx(ctx, this.actionRules, { kind: 'none', label: 'No action' } as const);
+    const ctx = buildJobCtx(this.type(), this.state());
+    return decideWithCtx(ctx, this.actionRules, NO_ACTION);
   });
 
-  // Trace as a computed array: recompute logs without mutating any signals.
   readonly trace = computed<string[]>(() => {
     const logs: string[] = [];
-    const ctx = deriveCtx(this.type(), this.state());
-
-    // Collect rule-matching trace for header
-    decideWithCtx(ctx, this.headerRules, () => 'Unknown state', {
-      collect: (msg) => logs.push(JSON.stringify(msg)),
-    });
-
-    // Collect rule-matching trace for action
-    decideWithCtx(ctx, this.actionRules, { kind: 'none', label: 'No action' } as const, {
-      collect: (msg) => logs.push(JSON.stringify(msg)),
-    });
-
+    const ctx = buildJobCtx(this.type(), this.state());
+    decideWithCtx(ctx, this.headerRules, () => 'Unknown state', { collect: (m) => logs.push(JSON.stringify(m)) });
+    decideWithCtx(ctx, this.actionRules, NO_ACTION, { collect: (m) => logs.push(JSON.stringify(m)) });
     return logs;
   });
 

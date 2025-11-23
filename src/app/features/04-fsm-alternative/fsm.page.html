@@ -15,14 +15,14 @@
   </div>
 
   <div class="buttons">
-    <button type="button" (click)="dispatch('start')"    [disabled]="!can('start')">start</button>
-    <button type="button" (click)="dispatch('complete')" [disabled]="!can('complete')">complete</button>
-    <button type="button" (click)="dispatch('fail')"     [disabled]="!can('fail')">fail</button>
-    <button type="button" (click)="dispatch('reset')"    [disabled]="!can('reset')">reset</button>
+    <button type="button" (click)="dispatch(FsmEvent.Start)"    [disabled]="!can(FsmEvent.Start)">start</button>
+    <button type="button" (click)="dispatch(FsmEvent.Complete)" [disabled]="!can(FsmEvent.Complete)">complete</button>
+    <button type="button" (click)="dispatch(FsmEvent.Fail)"     [disabled]="!can(FsmEvent.Fail)">fail</button>
+    <button type="button" (click)="dispatch(FsmEvent.Reset)"    [disabled]="!can(FsmEvent.Reset)">reset</button>
   </div>
 
   <p class="hint">Allowed events:
-    @for (e of allowed(); track $index) { <code>{{ e }}</code> }
+    @for (e of allowed(); track $index) { <code> {{ e }} </code> }
   </p>
 
   <article class="card">

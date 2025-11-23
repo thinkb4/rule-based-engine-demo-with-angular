@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { FsmEvent, JobType, State, transitions, vmFrom } from './fsm/config';
+import { JOB_TYPES, JobState, JobType } from '@/app/shared/domain/job.model';
+import { FsmEvent, transitions, vmFrom } from './fsm/config';
 import { step } from './fsm/engine';
 
 @Component({
@@ -11,13 +12,14 @@ import { step } from './fsm/engine';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FsmPage {
-  readonly types: readonly JobType[] = ['standard', 'premium'] as const;
-  readonly type = signal<JobType>('standard');
+  readonly types = JOB_TYPES;
+  readonly FsmEvent = FsmEvent;
 
-  readonly state = signal<State>('idle');
+  readonly type = signal<JobType>(JobType.Standard);
+  readonly state = signal<JobState>(JobState.Idle);
+
   readonly vm = computed(() => vmFrom(this.state(), this.type()));
 
-  /** Allowed events from the current state (derived from the transition table). */
   readonly allowed = computed<readonly FsmEvent[]>(() =>
     transitions.filter(t => t.from === this.state()).map(t => t.event)
   );
@@ -26,17 +28,13 @@ export class FsmPage {
     return this.allowed().includes(e);
   }
 
-  /** DOM change event from the <select>. */
   onType(e: Event): void {
     const value = (e.target as HTMLSelectElement).value as JobType;
     this.type.set(value);
   }
 
-  /** FSM event dispatch. If not allowed, it's a no-op (buttons are disabled anyway). */
   dispatch(e: FsmEvent): void {
-    if (!this.can(e)) {
-      return;
-    }
+    if (!this.can(e)) return;
     const next = step(this.state(), e, transitions);
     this.state.set(next);
   }
