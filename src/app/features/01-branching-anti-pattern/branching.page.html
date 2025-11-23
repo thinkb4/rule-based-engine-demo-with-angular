@@ -34,6 +34,11 @@
   </article>
 </section>
 
+<section class="runtime">
+  <h4>Runtime panel (selected by branching)</h4>
+  <ng-container *ngComponentOutlet="panelComponent()"></ng-container>
+</section>
+
 <section class="notes">
   <h4>Purpose</h4>
   <p>Show why deeply nested branching is hard to read, reason about, and test.</p>

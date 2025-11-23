@@ -31,6 +31,11 @@
   </article>
 </section>
 
+<section class="runtime">
+  <h4>Runtime panel (selected by FSM state)</h4>
+  <ng-container *ngComponentOutlet="panelComponent()"></ng-container>
+</section>
+
 <section class="notes">
   <h4>Purpose</h4>
   <p>Show a finite-state machine when the lifecycle is strict and event-driven.</p>

@@ -1,3 +1,5 @@
+import { isFactoryFunction } from '@/app/shared/utils/invocation-guards';
+
 export type StaticRule<T> = Readonly<{ when: boolean; value: T | (() => T) }>;
 
 export function pickByRules<T>(
@@ -5,9 +7,10 @@ export function pickByRules<T>(
   fallback: T | (() => T),
 ): T {
   for (const r of rules) {
-    if (r.when) {
-      return typeof r.value === 'function' ? (r.value as () => T)() : r.value;
-    }
+    if (!r.when) continue;
+    const v = r.value as unknown;
+    return isFactoryFunction(v) ? (v as () => T)() : (v as T);
   }
-  return typeof fallback === 'function' ? (fallback as () => T)() : fallback;
+  const fb = fallback as unknown;
+  return isFactoryFunction(fb) ? (fb as () => T)() : (fb as T);
 }

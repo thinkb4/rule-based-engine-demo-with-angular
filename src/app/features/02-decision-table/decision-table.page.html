@@ -34,6 +34,11 @@
   </article>
 </section>
 
+<section class="runtime">
+  <h4>Runtime panel (selected by decision table)</h4>
+  <ng-container *ngComponentOutlet="panelComponent()"></ng-container>
+</section>
+
 <section class="notes">
   <h4>Purpose</h4>
   <p>Demonstrate a minimal, data-driven Chain of Responsibility (decision table).</p>
