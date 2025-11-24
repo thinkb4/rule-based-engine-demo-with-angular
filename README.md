@@ -20,18 +20,18 @@ We implement the same business rules in four different ways to compare ergonomic
 
 ### Header (mapping from `(state, type)`)
 
-- `idle`   → “{Standard|Premium} job is idle”
-- `running`→ “{Standard|Premium} is processing”
-- `ready`  → “{Standard|Premium} result ready”
-- `failed` → “{Standard|Premium} failed”
+- `idle`   -> “{Standard|Premium} job is idle”
+- `running`-> “{Standard|Premium} is processing”
+- `ready`  -> “{Standard|Premium} result ready”
+- `failed` -> “{Standard|Premium} failed”
 
 ### Primary Action (priority order)
 
-1. If `ready`  → **view** (“Open Result”)
-2. Else if `running` → **none** (“Processing…”)  
-3. Else if `idle` → **start** (“Start Standard” or “Start Premium”)
-4. Else if `failed` → **retry** (“Retry”)
-5. Else → **none** (“No action”)
+1. If `ready`  -> **view** (“Open Result”)
+2. Else if `running` -> **none** (“Processing…”)  
+3. Else if `idle` -> **start** (“Start Standard” or “Start Premium”)
+4. Else if `failed` -> **retry** (“Retry”)
+5. Else -> **none** (“No action”)
 
 ### FSM Transitions (used by View 4)
 
@@ -63,7 +63,7 @@ We implement the same business rules in four different ways to compare ergonomic
 4) **FSM Alternative** — `features/04-fsm-alternative`  
    - Explicit **states** and **events** with a small `step()` runner and a pure `(state, type) -> view-model` mapping.  
    - UI enables only allowed events; disallowing illegal transitions.  
-   - **Runtime component choosing:** a simple **state → component map** (`panelForState`) returns the presentational component.
+   - **Runtime component choosing:** a simple **state -> component map** (`panelForState`) returns the presentational component.
 
 ## Runtime Component Selection (Presentational Panels)
 
