@@ -19,8 +19,8 @@ import { HEADER_RULES, ACTION_RULES, Ctx } from './tokens';
  *   (`HEADER_RULES`, `ACTION_RULES`) using `{ multi: true }`.
  * - Use a higher `priority` to take precedence, or a lower one to fall back.
  *
- * @see https://angular.dev/guide/dependency-injection
- * @see https://angular.dev/guide/dependency-injection-in-action#multi-providers
+ * @see https://angular.dev/essentials/dependency-injection
+ * @see https://angular.dev/guide/di/defining-dependency-providers#multiple-providers
  * @see "@/app/shared/rules/decision-engine.ts" (priority + first-match semantics)
  */
 export const BASE_RULE_PROVIDERS: Provider[] = [

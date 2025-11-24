@@ -13,7 +13,7 @@ import {
  * Base panel-selection rules by state (priority high -> low).
  * Kept in a provider array so features can add/override with multi providers.
  *
- * @see https://angular.dev/guide/dependency-injection-in-action#multi-providers
+ * @see https://angular.dev/guide/di/defining-dependency-providers#multiple-providers
  */
 export const PANEL_BASE_RULE_PROVIDERS: Provider[] = [
   { provide: PANEL_RULES, multi: true, useValue: { name: 'idle',    priority: 40, when: (c: JobCtx) => c.facts.isIdle,    value: IdlePanelComponent as Type<JobStatePanel> } },

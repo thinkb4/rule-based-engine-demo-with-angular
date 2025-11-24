@@ -33,7 +33,7 @@ export type DecisionTraceStep<T> = Readonly<{
  * @param fallback literal/factory fallback
  * @param trace    optional collector for debug/teaching
  *
- * @see https://angular.dev/guide/dependency-injection (for multi providers used to contribute rules)
+ * @see https://angular.dev/essentials/dependency-injection (for multi providers used to contribute rules)
  * @see https://refactoring.guru/design-patterns/chain-of-responsibility
  */
 export function decideWithCtx<C, T>(
