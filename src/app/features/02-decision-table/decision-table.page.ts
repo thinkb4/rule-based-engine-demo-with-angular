@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { JOB_STATES, JOB_TYPES, JobState, JobType } from '@/app/shared/domain/job.model';
-import { computeVmDecisionTable } from './decision-table.vm';
+import { computeVmDecisionTable } from './vm/decision-table.vm';
 import { NgComponentOutlet } from '@angular/common';
 import type { Type } from '@angular/core';
 import type { JobStatePanel } from '@/app/shared/ui/job-state-panels';
-import { selectPanelByRules } from './decision-table.panel';
+import { selectPanelByRules } from './panel/decision-table.panel';
 
 /**
  * Decision-table view: shows how data-driven rules select both

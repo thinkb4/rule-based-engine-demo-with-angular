@@ -1,4 +1,4 @@
-import { isAngularIvyType, isClassConstructor, isFactoryFunction } from './invocation-guards';
+import { isAngularIvyType, isClassConstructor, isFactoryFunction } from './invocation.guards';
 import { Component } from '@angular/core';
 
 @Component({ standalone: true, template: '' })

@@ -1,4 +1,4 @@
-import { isFactoryFunction } from '@/app/shared/utils/invocation-guards';
+import { isFactoryFunction } from '@/app/shared/guards/invocation.guards';
 
 /**
  * Minimalistic rule cell for a decision table ("first match wins").

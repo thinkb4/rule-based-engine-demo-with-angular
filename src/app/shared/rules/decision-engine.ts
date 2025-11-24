@@ -1,4 +1,4 @@
-import { isFactoryFunction } from '@/app/shared/utils/invocation-guards';
+import { isFactoryFunction } from '@/app/shared/guards/invocation.guards';
 
 /**
  * Generic rule entry used by the improved engine.

@@ -1,4 +1,4 @@
-import { computeVmDecisionTable } from './decision-table.vm';
+import { computeVmDecisionTable } from '../vm/decision-table.vm';
 import { JobType, JobState, ActionKind } from '@/app/shared/domain/job.model';
 
 describe('computeVmDecisionTable', () => {

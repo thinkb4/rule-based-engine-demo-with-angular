@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { JOB_STATES, JOB_TYPES, JobState, JobType } from '@/app/shared/domain/job.model';
-import { computeVmBranching } from './branching.vm';
+import { computeVmBranching } from './vm/branching.vm';
 import { NgComponentOutlet } from '@angular/common';
 import type { Type } from '@angular/core';
 import type { JobStatePanel } from '@/app/shared/ui/job-state-panels';
-import { selectPanelBranching } from './branching.panel';
+import { selectPanelBranching } from './panel/branching.panel';
 
 /**
  * Branching anti-pattern page.
