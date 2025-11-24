@@ -7,7 +7,7 @@ import { BASE_RULE_PROVIDERS } from './rules/base-rules.provider';
 import { NgComponentOutlet } from '@angular/common';
 import { PANEL_RULES } from './rules/panel.tokens';
 import { PANEL_BASE_RULE_PROVIDERS } from './rules/panel-base-rules.provider';
-import type { JobStatePanel } from '@/app/shared/ui/job-state-panels';
+import { JobPanelFallbackComponent } from '@/app/components/job-state-panels/job-panel-fallback.component';
 
 @Component({
   standalone: true,
@@ -27,10 +27,16 @@ export class DecisionTableAdvancedPage {
 
   private readonly headerRules = inject(HEADER_RULES, { optional: true }) ?? [];
   private readonly actionRules = inject(ACTION_RULES, { optional: true }) ?? [];
-  private readonly panelRules = inject(PANEL_RULES, { optional: true }) ?? [];
+  private readonly panelRules  = inject(PANEL_RULES,  { optional: true }) ?? [];
 
-  readonly header = computed(() => decideWithCtx(buildJobCtx(this.type(), this.state()), this.headerRules, () => 'Unknown state'));
-  readonly action = computed<PrimaryAction>(() => decideWithCtx(buildJobCtx(this.type(), this.state()), this.actionRules, NO_ACTION));
+  readonly header = computed(() =>
+    decideWithCtx(buildJobCtx(this.type(), this.state()), this.headerRules, () => 'Unknown state')
+  );
+
+  readonly action = computed<PrimaryAction>(() =>
+    decideWithCtx(buildJobCtx(this.type(), this.state()), this.actionRules, NO_ACTION)
+  );
+
   readonly trace = computed<string[]>(() => {
     const logs: string[] = [];
     const ctx = buildJobCtx(this.type(), this.state());
@@ -40,8 +46,13 @@ export class DecisionTableAdvancedPage {
     return logs;
   });
 
-  readonly panelComponent = computed<Type<JobStatePanel>>(
-    () => decideWithCtx(buildJobCtx(this.type(), this.state()), this.panelRules, IdlePanelFallback)
+  /**
+   * Panel chosen by DI rules; fallback is a separate presentational component.
+   * Typed as `Type<unknown>` because the fallback is not part of the shared `JobStatePanel` union.
+   * (If we prefer to have a stricter typing, we can define a local union: `type AdvancedPanel = JobStatePanel | JobPanelFallbackComponent`.)
+   */
+  readonly panelComponent = computed<Type<unknown>>(() =>
+    decideWithCtx(buildJobCtx(this.type(), this.state()), this.panelRules, JobPanelFallbackComponent)
   );
 
   onSelectType(e: Event): void {
@@ -53,13 +64,3 @@ export class DecisionTableAdvancedPage {
     this.state.set(value);
   }
 }
-
-/** fallback as a tiny inline component to keep imports minimal */
-import { Component as Cmp, ChangeDetectionStrategy as CDS } from '@angular/core';
-@Cmp({
-  standalone: true,
-  selector: 'app-job-panel-fallback',
-  template: `<div class="panel">Fallback Panel</div>`,
-  changeDetection: CDS.OnPush,
-})
-class IdlePanelFallback {}

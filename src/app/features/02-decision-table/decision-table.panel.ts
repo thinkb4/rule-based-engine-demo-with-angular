@@ -9,6 +9,10 @@ import {
   JobStatePanel,
 } from '@/app/shared/ui/job-state-panels';
 
+/**
+ * Pick a presentational panel using the simple decision-table helper.
+ * A nice parallel to the VM builder using the same approach.
+ */
 export function selectPanelByRules(type: JobType, state: JobState): Type<JobStatePanel> {
   const isStd = type === JobType.Standard;
   const isPrm = type === JobType.Premium;

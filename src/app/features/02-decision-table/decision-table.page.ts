@@ -6,6 +6,10 @@ import type { Type } from '@angular/core';
 import type { JobStatePanel } from '@/app/shared/ui/job-state-panels';
 import { selectPanelByRules } from './decision-table.panel';
 
+/**
+ * Decision-table view: shows how data-driven rules select both
+ * the VM and a presentational component at runtime.
+ */
 @Component({
   standalone: true,
   selector: 'app-decision-table-page',

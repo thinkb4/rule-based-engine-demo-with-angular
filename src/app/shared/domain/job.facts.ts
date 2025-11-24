@@ -1,5 +1,9 @@
 import { JobState, JobType } from './job.model';
 
+/**
+ * Pre-derived booleans used by rule tables/engines.
+ * This keeps conditions trivial at call-sites and more testable.
+ */
 export type JobFacts = Readonly<{
   isStandard: boolean;
   isPremium: boolean;
@@ -9,6 +13,10 @@ export type JobFacts = Readonly<{
   isFailed: boolean;
 }>;
 
+/**
+ * Build derived facts one time per render/evaluation.
+ * This reduces repeated comparisons scattered through rules.
+ */
 export function deriveFacts(type: JobType, state: JobState): JobFacts {
   return {
     isStandard: type === JobType.Standard,

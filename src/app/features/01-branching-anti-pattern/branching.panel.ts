@@ -8,6 +8,10 @@ import {
   JobStatePanel,
 } from '@/app/shared/ui/job-state-panels';
 
+/**
+ * Deliberately branching-based panel chooser (to mirror the anti-pattern VM).
+ * The redundancy here is intentional, so students can compare with rule-based versions.
+ */
 export function selectPanelBranching(type: JobType, state: JobState): Type<JobStatePanel> {
   // Intentionally messy branching like the anti-pattern VM
   if (state === JobState.Idle) {

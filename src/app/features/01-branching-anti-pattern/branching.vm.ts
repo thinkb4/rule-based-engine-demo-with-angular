@@ -1,9 +1,17 @@
 import { ActionKind, JobState, JobType, PrimaryAction, ViewModel } from '@/app/shared/domain/job.model';
 
+/**
+ * Anti-pattern VM builder: intentionally verbose, nested branching,
+ * and redundant checks to show why we prefer rule-based approaches.
+ */
 function isState(s: JobState, expected: JobState): boolean {
   return s === expected;
 }
 
+/**
+ * Intentionally tangled version for teaching.
+ * Devs can compare the cognitive load vs. the decision-table/engine.
+ */
 export function computeVmBranching(type: JobType, state: JobState): ViewModel {
   let header = '';
   let showIdle = false;

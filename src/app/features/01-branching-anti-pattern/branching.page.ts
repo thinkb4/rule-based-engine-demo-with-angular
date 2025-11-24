@@ -6,6 +6,10 @@ import type { Type } from '@angular/core';
 import type { JobStatePanel } from '@/app/shared/ui/job-state-panels';
 import { selectPanelBranching } from './branching.panel';
 
+/**
+ * Branching anti-pattern page.
+ * This exists to make the downsides of nested conditionals concrete and visible.
+ */
 @Component({
   standalone: true,
   selector: 'app-branching-page',

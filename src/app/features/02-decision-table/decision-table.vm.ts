@@ -2,6 +2,12 @@ import { ActionKind, JobState, JobType, PrimaryAction, ViewModel, NO_ACTION } fr
 import { deriveFacts } from '@/app/shared/domain/job.facts';
 import { pickByRules } from '@/app/shared/rules/decision-table';
 
+/**
+ * Classic decision-table VM builder (first match wins).
+ * Facts are derived once; rules stay declarative and predictable.
+ *
+ * @see https://en.wikipedia.org/wiki/Decision_table
+ */
 export function computeVmDecisionTable(type: JobType, state: JobState): ViewModel {
   const d = deriveFacts(type, state);
 

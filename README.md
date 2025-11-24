@@ -17,18 +17,18 @@ We’ll implement the same business rules in four different ways to compare ergo
 
 ### Header (mapping from `(state, type)`)
 
-- `idle`   → “{Standard|Premium} job is idle”
-- `running`→ “{Standard|Premium} is processing”
-- `ready`  → “{Standard|Premium} result ready”
-- `failed` → “{Standard|Premium} failed”
+- `idle`   -> “{Standard|Premium} job is idle”
+- `running`-> “{Standard|Premium} is processing”
+- `ready`  -> “{Standard|Premium} result ready”
+- `failed` -> “{Standard|Premium} failed”
 
 ### Primary Action (priority order)
 
-1. If `ready`  → **view** (“Open Result”)
-2. Else if `running` → **none** (“Processing…”)
-3. Else if `idle` → **start** (“Start Standard” or “Start Premium”)
-4. Else if `failed` → **retry** (“Retry”)
-5. Else → **none** (“No action”)
+1. If `ready`  -> **view** (“Open Result”)
+2. Else if `running` -> **none** (“Processing…”)
+3. Else if `idle` -> **start** (“Start Standard” or “Start Premium”)
+4. Else if `failed` -> **retry** (“Retry”)
+5. Else -> **none** (“No action”)
 
 ### FSM Transitions (used by View 4)
 
