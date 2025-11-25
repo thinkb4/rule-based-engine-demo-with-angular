@@ -141,9 +141,12 @@ npm run test:watch
 
 ## References
 
-- Angular Signals: https://angular.dev/guide/signals  
-- NgComponentOutlet: https://angular.dev/api/common/NgComponentOutlet  
-- Dependency Injection & Multi Providers: https://angular.dev/guide/di/defining-dependency-providers#multiple-providers  
-- Decision Tables: https://en.wikipedia.org/wiki/Decision_table  
-- Chain of Responsibility: https://refactoring.guru/design-patterns/chain-of-responsibility  
-- Finite-State Machines: https://en.wikipedia.org/wiki/Finite-state_machine
+- [Angular Signals](https://angular.dev/guide/signals)  
+- [NgComponentOutlet](https://angular.dev/api/common/NgComponentOutlet)  
+- [Dependency Injection & Multi Providers](https://angular.dev/guide/di/defining-dependency-providers#multiple-providers)  
+- [Decision Tables](https://en.wikipedia.org/wiki/Decision_table)  
+- [Chain of Responsibility - Refactoring Guru](https://refactoring.guru/design-patterns/chain-of-responsibility)
+- [State Pattern - Refactoring Guru](https://refactoring.guru/design-patterns/state)
+- [State Pattern - Wikipedia](https://en.wikipedia.org/wiki/State_pattern)
+- [Finite-State Machines](https://en.wikipedia.org/wiki/Finite-state_machine)
+- [An introduction to finite state machines and the state pattern for game development](https://youtu.be/-ZP2Xm-mY4E?si=bjbA_WAakJgjjXbY)
