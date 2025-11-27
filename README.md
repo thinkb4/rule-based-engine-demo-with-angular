@@ -124,6 +124,16 @@ npm run test:watch
 - **FSM:** Prefer when the domain is a strict lifecycle with mutually exclusive states and event-driven transitions.
 - **Runtime UI selection:** The same decision mechanism that builds the VM can also pick **which component to render**.
 
+## TL;DR
+
+**FSM enforces sequence; rules express policy.**
+
+An FSM defines the legal order of events: from each state, only certain transitions are allowed. It prevents illegal jumps (e.g., you can’t “fail” unless you’re running) and makes the lifecycle deterministic.
+
+**Rules** sit on top of that sequence: given the current state and facts (type, role, flags), they decide what to show or do—headers, CTAs, or which component to render.
+
+**Think: FSM = guard rails; Rules = signage.**
+
 ## Extending This Demo
 
 - Add new job types or states and update the rules (Views 2–3) or transitions (View 4).
